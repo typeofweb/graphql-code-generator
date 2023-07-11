@@ -2052,20 +2052,20 @@ export * from "./gql.js";`);
             return this.value;
           }
         }
-        export const FooFragmentDoc = new TypedDocumentString(\`
+        export const FooFragmentDoc = new TypedDocumentString<FooFragment, unknown>(\`
             fragment Foo on Foo {
           value
         }
-            \`, {"fragmentName":"Foo"}) as unknown as TypedDocumentString<FooFragment, unknown>;
-        export const FooFragmentDoc = new TypedDocumentString(\`
+            \`, {"fragmentName":"Foo"});
+        export const FooFragmentDoc = new TypedDocumentString<FooFragment, unknown>(\`
             fragment foo on Foo {
           id
           ... on Foo @defer {
             value
           }
         }
-            \`, {"fragmentName":"foo"}) as unknown as TypedDocumentString<FooFragment, unknown>;
-        export const FooDocument = new TypedDocumentString(\`
+            \`, {"fragmentName":"foo"});
+        export const FooDocument = new TypedDocumentString<FooQuery, FooQueryVariables>(\`
             query Foo {
           foo {
             ...Foo @defer
@@ -2079,8 +2079,8 @@ export * from "./gql.js";`);
           ... on Foo @defer {
             value
           }
-        }\`, {"deferredFields":{"Foo":["value"]}}) as unknown as TypedDocumentString<FooQuery, FooQueryVariables>;
-        export const FoosDocument = new TypedDocumentString(\`
+        }\`, {"deferredFields":{"Foo":["value"]}});
+        export const FoosDocument = new TypedDocumentString<FoosQuery, FoosQueryVariables>(\`
             query Foos {
           foos {
             ...Foo @defer
@@ -2094,7 +2094,7 @@ export * from "./gql.js";`);
           ... on Foo @defer {
             value
           }
-        }\`, {"deferredFields":{"Foo":["value"]}}) as unknown as TypedDocumentString<FoosQuery, FoosQueryVariables>;"
+        }\`, {"deferredFields":{"Foo":["value"]}});"
       `);
     });
 
@@ -2193,20 +2193,20 @@ export * from "./gql.js";`);
             return this.value;
           }
         }
-        export const FooFragmentDoc = new TypedDocumentString(\`
+        export const FooFragmentDoc = new TypedDocumentString<FooFragment, unknown>(\`
             fragment Foo on Foo {
           value
         }
-            \`, {"fragmentName":"Foo"}) as unknown as TypedDocumentString<FooFragment, unknown>;
-        export const FooFragmentDoc = new TypedDocumentString(\`
+            \`, {"fragmentName":"Foo"});
+        export const FooFragmentDoc = new TypedDocumentString<FooFragment, unknown>(\`
             fragment foo on Foo {
           id
           ... on Foo @defer {
             value
           }
         }
-            \`, {"fragmentName":"foo"}) as unknown as TypedDocumentString<FooFragment, unknown>;
-        export const FooDocument = new TypedDocumentString(\`
+            \`, {"fragmentName":"foo"});
+        export const FooDocument = new TypedDocumentString<FooQuery, FooQueryVariables>(\`
             query Foo {
           foo {
             ...Foo @defer
@@ -2220,8 +2220,8 @@ export * from "./gql.js";`);
           ... on Foo @defer {
             value
           }
-        }\`, {"hash":"2687841b00fe0b3b4fd0dfa2e943f80936594f58","deferredFields":{"Foo":["value"]}}) as unknown as TypedDocumentString<FooQuery, FooQueryVariables>;
-        export const FoosDocument = new TypedDocumentString(\`
+        }\`, {"hash":"2687841b00fe0b3b4fd0dfa2e943f80936594f58","deferredFields":{"Foo":["value"]}});
+        export const FoosDocument = new TypedDocumentString<FoosQuery, FoosQueryVariables>(\`
             query Foos {
           foos {
             ...Foo @defer
@@ -2235,7 +2235,7 @@ export * from "./gql.js";`);
           ... on Foo @defer {
             value
           }
-        }\`, {"hash":"8db613cc1f12f64dbde9cd6fef167fd12246330d","deferredFields":{"Foo":["value"]}}) as unknown as TypedDocumentString<FoosQuery, FoosQueryVariables>;"
+        }\`, {"hash":"8db613cc1f12f64dbde9cd6fef167fd12246330d","deferredFields":{"Foo":["value"]}});"
       `);
     });
   });
@@ -2329,12 +2329,12 @@ export * from "./gql.js";`);
             return this.value;
           }
         }
-        export const FooFragmentDoc = new TypedDocumentString(\`
+        export const FooFragmentDoc = new TypedDocumentString<FooFragment, unknown>(\`
             fragment Foo on Foo {
           value
         }
-            \`, {"fragmentName":"Foo"}) as unknown as TypedDocumentString<FooFragment, unknown>;
-        export const FooDocument = new TypedDocumentString(\`
+            \`, {"fragmentName":"Foo"});
+        export const FooDocument = new TypedDocumentString<FooQuery, FooQueryVariables>(\`
             query Foo {
           foo {
             ...Foo
@@ -2342,8 +2342,8 @@ export * from "./gql.js";`);
         }
             fragment Foo on Foo {
           value
-        }\`) as unknown as TypedDocumentString<FooQuery, FooQueryVariables>;
-        export const FoosDocument = new TypedDocumentString(\`
+        }\`);
+        export const FoosDocument = new TypedDocumentString<FoosQuery, FoosQueryVariables>(\`
             query Foos {
           foos {
             ...Foo
@@ -2351,7 +2351,7 @@ export * from "./gql.js";`);
         }
             fragment Foo on Foo {
           value
-        }\`) as unknown as TypedDocumentString<FoosQuery, FoosQueryVariables>;"
+        }\`);"
       `);
     });
 
@@ -2478,7 +2478,7 @@ export * from "./gql.js";`);
 
       const graphqlFile = result.find(file => file.filename === 'out1/graphql.ts');
       expect(graphqlFile.content).toBeSimilarStringTo(`
-        export const VideoDocument = new TypedDocumentString(\`
+        export const VideoDocument = new TypedDocumentString<VideoQuery, VideoQueryVariables>(\`
           query Video($id: ID!) {
             video(id: $id) {
               ...DetailsFragment
@@ -2509,7 +2509,7 @@ export * from "./gql.js";`);
             __typename
             ...MovieFragment
             ...EpisodeFragment
-          }\`) as unknown as TypedDocumentString<VideoQuery, VideoQueryVariables>;
+          }\`);
       `);
     });
   });

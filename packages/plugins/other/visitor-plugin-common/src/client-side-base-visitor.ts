@@ -425,10 +425,41 @@ export class ClientSideBaseVisitor<
 
       return `{${metaString}"kind":"${Kind.DOCUMENT}","definitions":${jsonStringify(definitions)}}`;
     }
-
     if (this.config.documentMode === DocumentMode.string) {
+      const { operationResultType, operationVariablesTypes } = (() => {
+        if (node.kind === Kind.FRAGMENT_DEFINITION) {
+          const fragmentTypeSuffix = this.getFragmentSuffix(node);
+          const operationResultType = this.convertName(node.name.value, {
+            useTypesPrefix: true,
+            suffix: fragmentTypeSuffix,
+          });
+          const operationVariablesTypes = this.config.experimentalFragmentVariables
+            ? this.convertName(node.name.value, {
+                suffix: fragmentTypeSuffix + 'Variables',
+              })
+            : 'unknown';
+          return {
+            operationResultType,
+            operationVariablesTypes,
+          };
+        }
+        const operationTypeSuffix: string = this.getOperationSuffix(node, pascalCase(node.operation));
+        const operationResultType: string = this.convertName(node, {
+          suffix: operationTypeSuffix + this._parsedConfig.operationResultSuffix,
+        });
+        const operationVariablesTypes: string = this.convertName(node, {
+          suffix: operationTypeSuffix + 'Variables',
+        });
+        return {
+          operationResultType,
+          operationVariablesTypes,
+        };
+      })();
+
       if (node.kind === Kind.FRAGMENT_DEFINITION) {
-        return `new TypedDocumentString(\`${doc}\`, ${JSON.stringify({ fragmentName: node.name.value })})`;
+        return `new TypedDocumentString<${operationResultType}, ${operationVariablesTypes}>(\`${doc}\`, ${JSON.stringify(
+          { fragmentName: node.name.value }
+        )})`;
       }
 
       if (this._onExecutableDocumentNode && node.kind === Kind.OPERATION_DEFINITION) {
@@ -438,11 +469,13 @@ export class ClientSideBaseVisitor<
           if (this._omitDefinitions === true) {
             return `{${`"__meta__":${JSON.stringify(meta)},`.slice(0, -1)}}`;
           }
-          return `new TypedDocumentString(\`${doc}\`, ${JSON.stringify(meta)})`;
+          return `new TypedDocumentString<${operationResultType}, ${operationVariablesTypes}>(\`${doc}\`, ${JSON.stringify(
+            meta
+          )})`;
         }
       }
 
-      return `new TypedDocumentString(\`${doc}\`)`;
+      return `new TypedDocumentString<${operationResultType}, ${operationVariablesTypes}>(\`${doc}\`)`;
     }
 
     const gqlImport = this._parseImport(this.config.gqlImport || 'graphql-tag');

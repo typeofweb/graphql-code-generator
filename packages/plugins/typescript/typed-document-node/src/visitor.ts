@@ -107,7 +107,7 @@ export class TypeScriptDocumentNodesVisitor extends ClientSideBaseVisitor<
     }
 
     if (this.config.documentMode === DocumentMode.string) {
-      return ` as unknown as TypedDocumentString<${resultType}, ${variablesTypes}>`;
+      return ``;
     }
 
     return super.getDocumentNodeSignature(resultType, variablesTypes, node);
